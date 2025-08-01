@@ -6,7 +6,7 @@ export default function Modal( { winner, handleReset }: { winner: number | null,
     return (
         <div className="fixed bg-gray-700/50 backdrop-blur-sm h-screen w-full z-1">
             <Dialog defaultOpen >
-                <DialogContent className="flex flex-col items-center justify-center gap-[2rem] p-10" onInteractOutside={(event) => event.preventDefault()}>
+                <DialogContent className="bg-gradient-to-br from-zinc-800 to-zinc-900 flex flex-col items-center justify-center border-none gap-[2rem] p-10" onInteractOutside={(event) => event.preventDefault()}>
                         <DialogTitle className="text-2xl" >Player { winner } Wins!</DialogTitle>
                         <Button onClick={handleReset}>Reset</Button>
                 </DialogContent>

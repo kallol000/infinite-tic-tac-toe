@@ -6,7 +6,8 @@ import { player } from "./utils/types";
 import { checkWinner } from "./utils/helperfns";
 import { Queue } from "./utils/dataStructures";
 import { motion } from "motion/react"
-import  Modal  from "../components/ui/Modal"
+import Modal from "../components/ui/Modal"
+import { Button } from "@/components/ui/button";
 
 
 
@@ -93,9 +94,10 @@ export default function Home() {
           <div className="grid grid-cols-3 gap-4">
             { boxes }
           </div>
-          <div className="px-[2rem] py-[1rem] text-2xl bg-foreground text-background rounded-sm">
+          <div className="px-[2rem] py-[1rem] text-2xl font-semibold border border-stone-50/80 border-4 text-foreground  rounded-sm">
             {`Player ${ currentPlayer }'s turn`}
           </div>
+          <Button variant="destructive" onClick={handleReset} className="fixed right-[4rem]">Reset</Button>
 
         </div>
       </motion.div>
