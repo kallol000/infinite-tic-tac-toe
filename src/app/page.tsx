@@ -1,103 +1,104 @@
-import Image from "next/image";
+"use client"
+
+import { useState, useEffect, ReactNode, ChangeEvent } from "react";
+import Box from "../components/ui/Box";
+import { player } from "./utils/types";
+import { checkWinner } from "./utils/helperfns";
+import { Queue } from "./utils/dataStructures";
+import { motion } from "motion/react"
+import  Modal  from "../components/ui/Modal"
+
+
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const [ boxes, setBoxes ] = useState<ReactNode[] | []>( [] )
+  const [ currentPlayer, setCurrentPlayer ] = useState<number>( 1 )
+  const [ inputs, setInputs ] = useState<player[]>( new Array( 9 ).fill( { value: null, disabled: false, showText: null } ) )
+  const [ queue, setQueue ] = useState<Queue>( new Queue() )
+  const [ winner, setWinner ] = useState<number | null>( null )
+  
+
+
+  const handleClick = ( event: React.MouseEvent<HTMLInputElement>, index: number ) => {
+
+    queue.enque( index )
+
+    if ( queue.getLength() > 6 ) {
+      const eliminatedIndex = queue.deque()!
+      console.log(eliminatedIndex)
+
+      setInputs( prev => {
+        const updatedInput = prev
+        updatedInput[ eliminatedIndex ] = { value: null, disabled: false, showText: null}
+        return updatedInput
+      })
+    }
+
+    setCurrentPlayer( prev => prev === 1 ? 2 : 1)
+    
+    setInputs( prev => {
+      const updatedInput = prev
+      updatedInput[ index ] = {value: currentPlayer, disabled: true, showText: currentPlayer === 1 ? "X" : "O"}
+      return updatedInput
+    })
+    
+  }  
+
+  function handleReset(): void {
+    setCurrentPlayer(prev => 1)
+    setWinner( null )
+    setInputs( prev => new Array( 9 ).fill( { value: null, disabled: false, showText: null } ) )
+    setQueue(prev => new Queue())
+  }
+  
+  useEffect( () => {
+    setBoxes( prev => inputs.map( ( item, index ) =>
+      <Box
+        key={ index }
+        name={ index.toString() }
+        text = {item.showText}
+        disabled={ item.disabled }
+        value={ item.value }
+        handleClick={ ( event ) => handleClick( event, index ) } />
+    ) )
+  }, [ inputs, currentPlayer ] )
+  
+  useEffect( () => {
+    if ( checkWinner( inputs ) ) {
+      setWinner( currentPlayer === 1 ? 2 : currentPlayer === 2 ? 1 : null )
+      
+    }
+  }, [ inputs, currentPlayer ] )
+  
+  console.log(currentPlayer, winner)
+
+  return (
+    <div>
+
+      {winner && <Modal winner={ winner } handleReset = {handleReset} /> } 
+      
+    <motion.div
+        initial={ { scale: 0 } }
+        animate={ { scale: 1 } }
+        transition={ {
+            duration: 0.5,
+            delay: 0,
+            ease: [0, 0.71, 0.2, 1.01],
+        }}  
+      >
+      
+        <div className="bg-gradient-to-br from-zinc-600 to-zinc-900 h-screen flex flex-col gap-[4rem] items-center p-[3rem] z-0"> 
+          <h1 className="text-5xl font-extrabold">Infinite Tic Tac Toe</h1>
+          <div className="grid grid-cols-3 gap-4">
+            { boxes }
+          </div>
+          <div className="px-[2rem] py-[1rem] text-2xl bg-foreground text-background rounded-sm">
+            {`Player ${ currentPlayer }'s turn`}
+          </div>
+
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </motion.div>
     </div>
   );
 }
