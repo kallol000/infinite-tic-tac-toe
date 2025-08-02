@@ -77,7 +77,7 @@ export default function Home() {
   return (
     <div className="relative bg-gradient-to-br from-zinc-600 to-zinc-900 h-screen">
 
-    <Button variant="destructive" onClick={handleReset} className="fixed top-[4rem] right-[4rem]">Reset</Button>
+    <Button variant="destructive" onClick={handleReset} className="fixed bottom-[4rem] md:top-[4rem] right-[4rem]">Reset</Button>
       {winner && <Modal winner={ winner } handleReset = {handleReset} /> } 
       
     <motion.div
@@ -91,11 +91,11 @@ export default function Home() {
       >
       
         <div className=" flex flex-col gap-[4rem] items-center p-[3rem] z-0"> 
-          <h1 className="text-5xl font-extrabold">Infinite Tic Tac Toe</h1>
+          <h1 className="text-4xl sm:text-5xl font-extrabold ">Infinite Tic Tac Toe</h1>
           <div className="grid grid-cols-3 gap-4">
             { boxes }
           </div>
-          <div className="px-[2rem] py-[1rem] text-2xl font-semibold border border-stone-50/80 border-4 text-foreground  rounded-sm">
+          <div className="px-[2rem] py-[1rem] text-sm sm:text-2xl font-semibold border border-stone-50/80 border-4 text-foreground  rounded-sm">
             {`Player ${ currentPlayer }'s turn`}
           </div>
 
