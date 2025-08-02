@@ -8,6 +8,7 @@ import { Queue } from "./utils/dataStructures";
 import { motion } from "motion/react"
 import Modal from "../components/ui/Modal"
 import { Button } from "@/components/ui/button";
+import { IconRestore } from "@tabler/icons-react";
 
 
 
@@ -77,8 +78,11 @@ export default function Home() {
   return (
     <div className="relative bg-gradient-to-br from-zinc-600 to-zinc-900 h-screen">
 
-    <Button variant="destructive" onClick={handleReset} className="fixed bottom-[4rem] md:top-[4rem] right-[4rem]">Reset</Button>
-      {winner && <Modal winner={ winner } handleReset = {handleReset} /> } 
+    <Button variant="destructive" onClick={handleReset} className="fixed hidden md:block md:top-[4rem] right-[4rem]">Reset</Button>
+    <Button variant="destructive" onClick={handleReset} className="fixed block md:hidden top-[2rem] right-[2rem]"><IconRestore /></Button>
+    
+    
+    {winner && <Modal winner={ winner } handleReset = {handleReset} /> } 
       
     <motion.div
         initial={ { scale: 0 } }
@@ -91,7 +95,7 @@ export default function Home() {
       >
       
         <div className=" flex flex-col gap-[4rem] items-center p-[3rem] z-0"> 
-          <h1 className="text-4xl sm:text-5xl font-extrabold ">Infinite Tic Tac Toe</h1>
+          <h1 className="text-center text-3xl sm:text-5xl font-extrabold ">Infinite Tic Tac Toe</h1>
           <div className="grid grid-cols-3 gap-4">
             { boxes }
           </div>
