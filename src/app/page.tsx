@@ -79,7 +79,7 @@ export default function Home() {
     <div className="relative bg-gradient-to-br from-zinc-600 to-zinc-900 h-screen">
 
     <Button variant="destructive" onClick={handleReset} className="fixed hidden md:block md:top-[4rem] right-[4rem]">Reset</Button>
-    <Button variant="destructive" onClick={handleReset} className="fixed block md:hidden top-[2rem] right-[2rem]"><IconRestore /></Button>
+    <Button variant="destructive" onClick={handleReset} className="fixed block md:hidden bottom-[2rem] right-[2rem]"><IconRestore /></Button>
     
     
     {winner && <Modal winner={ winner } handleReset = {handleReset} /> } 
