@@ -39,6 +39,25 @@ export class Queue {
     getLength():number {
         return this.length
     }
+
+    getFront(): number | null {
+    
+        if(this.arr1.length == 0 && this.arr2.length === 0) {
+            console.log("queue is empty")
+            // return null
+        }
+        
+        if(this.arr2.length > 0){
+            return this.arr2[this.arr2.length - 1]
+        }
+    
+        while(this.arr1.length > 0){
+            const item = this.arr1.pop()!
+            this.arr2.push(item)
+        }
+    
+        return this.arr2[this.arr2.length - 1]
+    }
 }
     
     // isEmpty(): boolean{
@@ -52,24 +71,6 @@ export class Queue {
 
 
     
-    // getFront() {
-
-    //     if(this.arr1.length == 0 && this.arr2.length === 0) {
-    //         console.log("queue is empty")
-    //         return null
-    //     }
-        
-    //     if(this.arr2.length > 0){
-    //         return this.arr2[this.arr2.length - 1]
-    //     }
-
-    //     while(this.arr1.length > 0){
-    //         let item = this.arr1.pop()
-    //         this.arr2.push(item)
-    //     }
-
-    //     return this.arr2[this.arr2.length - 1]
-    // }
 
 
 // let a = [[2,1,1],[1,1,0],[0,1,1]]

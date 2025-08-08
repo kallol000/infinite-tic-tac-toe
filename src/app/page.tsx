@@ -28,11 +28,20 @@ export default function Home() {
 
     if ( queue.getLength() > 6 ) {
       const eliminatedIndex = queue.deque()!
-      console.log(eliminatedIndex)
 
       setInputs( prev => {
         const updatedInput = prev
-        updatedInput[ eliminatedIndex ] = { value: null, disabled: false, showText: null}
+        updatedInput[ eliminatedIndex ] = { value: null, disabled: false, showText: null, dim: false}
+        return updatedInput
+      })
+    }
+
+    if ( queue.getLength() === 6 ) {
+      const firstElem = queue.getFront()!
+
+      setInputs( prev => {
+        const updatedInput = prev
+        updatedInput[ firstElem ] = { ...updatedInput[firstElem], dim: true} 
         return updatedInput
       })
     }
@@ -41,7 +50,7 @@ export default function Home() {
     
     setInputs( prev => {
       const updatedInput = prev
-      updatedInput[ index ] = {value: currentPlayer, disabled: true, showText: currentPlayer === 1 ? "X" : "O"}
+      updatedInput[ index ] = {value: currentPlayer, disabled: true, showText: currentPlayer === 1 ? "X" : "O", dim: false}
       return updatedInput
     })
     
@@ -62,7 +71,9 @@ export default function Home() {
         text = {item.showText}
         disabled={ item.disabled }
         value={ item.value }
-        handleClick={ ( event ) => handleClick( event, index ) } />
+        handleClick={ ( event ) => handleClick( event, index ) } 
+        dim = {item.dim}
+        />
     ) )
   }, [ inputs, currentPlayer ] )
   
