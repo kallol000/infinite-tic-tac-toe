@@ -6,7 +6,7 @@ export default function Box({ name, value, disabled, text, dim, handleClick } : 
 
     return (
         <div className="relative">
-                <input type="button" name={ name } disabled={ disabled } className={ `${ dim === true ? `bg-stone-50/50` : value === null ? `bg-stone-50/80 hover:bg-stone-50/50 transition-all` : value === 1 ? `bg-sky-300` : `bg-teal-300` } w-16 h-16 sm:w-32 sm:h-32 border-none rounded-sm  backdrop-blur-xs shadow-xl cursor-pointer  ` } onClick={ handleClick } />
+                <input type="button" name={ name } disabled={ disabled } className={ `${ value === null ? `bg-stone-50/80 hover:bg-stone-50/50 transition-all` : value === 1 ? `bg-sky-300` : `bg-teal-300` } ${dim ? `opacity-50 `: null} w-16 h-16 sm:w-32 sm:h-32 border-none rounded-sm  backdrop-blur-xs shadow-xl cursor-pointer  ` } onClick={ handleClick } />
                 { text &&
                 <motion.div
                     initial={ { opacity: 0 } }
